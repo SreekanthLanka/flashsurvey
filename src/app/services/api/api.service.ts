@@ -4,10 +4,11 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 import { Status } from 'src/app/models/status';
-import { PollModel, PollViewModel, PollVote, PollResult } from 'src/app/models/poll';
+import { PollModel, PollViewModel, PollVote, PollResult, UserPollsResponseModel } from 'src/app/models/poll';
 import { QuestionType, QuestionAnswersBody, QuestionAnswerRequest } from 'src/app/models/question-type';
 import { SurveyModel } from 'src/app/models/survey';
 import { UserSignInModel, UserLoginResponse } from 'src/app/models/users';
+import { DashboardMetricTile } from 'src/app/models/dashboard';
 @Injectable({
   providedIn: 'root'
 })
@@ -19,6 +20,18 @@ export class ApiService {
   _API: string;
   constructor(public http: HttpClient) {
     this._API = environment.API_URL + '/';
+  }
+
+  deletePoll(pollid: string) {
+    return this.http.delete<boolean>(this._API + `poll/delete/${pollid}`);
+  }
+
+  getUserPolls(pagenumber,pagesize) : Observable<UserPollsResponseModel>  {
+    return this.http.get<UserPollsResponseModel>(this._API + `poll/user/pagenumber/${pagenumber}/pagesize/${pagesize}`);
+  }
+
+  getDashboardTiles() : Observable<DashboardMetricTile>  {
+    return this.http.get<DashboardMetricTile>(this._API + `dashboard/tilemetrics`);
   }
 
   signInUser(data: UserSignInModel) : Observable<UserLoginResponse>  {

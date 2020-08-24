@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PollService } from 'src/app/services/poll/poll.service';
 import { OverlayService } from 'src/app/components/overlay/overlay.service';
+import { StatusEnum } from 'src/app/variables/status-enum.enum';
 
 @Component({
   selector: 'app-create-poll',
@@ -103,6 +104,7 @@ export class CreatePollComponent implements OnInit {
       data.type = this.getOptionType;
       data.duplicate = this.getDuplicateCheck;
       data.endDate = moment(this.getEndDate).toDate();
+      data.status = StatusEnum.Published;
       this.pollService.addPoll(data).subscribe(
         result => {
           const returnData: PollViewModel = result;
@@ -125,7 +127,7 @@ export class CreatePollComponent implements OnInit {
   // open snackbar
   openDismiss(message: string, buttontext: string) {
     this._snackBar.open(message, buttontext, {
-      duration: 300,
+      duration: 3000,
     });
   }
 
